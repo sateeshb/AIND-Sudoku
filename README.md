@@ -3,15 +3,15 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: By using constraint propagation we will remove the twins from other boxes to minimize the probability from other boxes.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: For normal sudoku we have constraints as rows, columns and square. so by adding diagonal to the normal constraints we can solve the diagonal sudoku problem.
 
 ### Install
 
-This project requires **Python 3**.
+This project requires Python 3.6.
 
 We recommend students install [Anaconda](https://www.continuum.io/downloads), a pre-packaged Python distribution that contains all of the necessary libraries and software for this project. 
 Please try using the environment we provided in the Anaconda lesson of the Nanodegree.
