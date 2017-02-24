@@ -3,11 +3,17 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: By using constraint propagation we will remove the twins from other boxes to minimize the probability from other boxes.
+A: constraint propagation is used with search to simplify the problem.
+in naked twins problem, the constraint is removing the twins from each columns and rows. so by finding and removing the duplicate values of twins
+in each row and column to solve the sudoku problem quickly.
+
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: For normal sudoku we have constraints as rows, columns and square. so by adding diagonal to the normal constraints we can solve the diagonal sudoku problem.
+A: As explained above we use the constrain propagation technique to solve the sudoku problem quickly.
+in diagonal sudoku we find the diagonals of the matrix. add those diagonals to our normal constraints such as columns, rows and squares to place the unique value(1 - 9) in each row, column, square and diagonal
+
+
 
 ### Install
 
