@@ -11,6 +11,7 @@ max_values = '123456789'
 def cross(A, B):
     return [a + b for a in A for b in B]
 
+
 row_units = [cross(r, columns) for r in rows]
 column_units = [cross(rows, c) for c in columns]
 square_units = [cross(ros,colms) for ros in (row_grids) for colms in (cols_grids)]
@@ -24,9 +25,7 @@ l = len(rows)
 left_diagonal_unit = [rows[i]+columns[i] for i in range(l)]  
 #['A9', 'B8', 'C7', 'D6', 'E5', 'F4', 'G3', 'H2', 'I1']
 right_diagonal_unit =  [rows[l-1-i]+columns[i] for i in range(l-1,-1,-1)]           
-
-print (left_diagonal_unit)
-print (right_diagonal_unit)
+#all diagonal units
 diagonal_units = [left_diagonal_unit,
                  right_diagonal_unit]
 
@@ -34,22 +33,13 @@ unit_list = row_units + column_units + square_units + diagonal_units
 units = dict((s, [u for u in unit_list if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
 
-# print('row units: ', row_units)
-# print('row units length ', len(row_units))
-# print('column_units: ', column_units)
-# print('column_units length ', len(column_units))
-# print ('square_units: ', square_units)
-# print('square_units length', len(square_units))
-# print('unit_list: ', unit_list) 
-# print('unit_list: length', len(unit_list))
-# print('boxes', boxes)
-# print('boxes: length ', len(boxes))
-# print('units', units)
-# print('units: length', len(units))
-# print('peers', peers)
-# print('peers: length', len(peers[1]))
 
 def display(values):
+    """
+    Input: The sudoku in dictionary form
+    Output: None
+    Display the values as a grid.
+    """
     width = 1+max(len(values[s]) for s in boxes)
     line = '+'.join(['-'*(width*3)]*3)
     for r in rows:
@@ -59,6 +49,13 @@ def display(values):
     return
 
 def grid_values(grid):
+    """
+    Convert grid into a dict of {square: char} with '123456789' for empties.
+    Input: A grid in string form.
+    Output: A grid in dictionary form
+            Keys: The boxes, e.g., 'A1'
+            Values: The value in each box, e.g., '8'. If the box has no value, then the value will be '123456789'.
+    """
     empty_value = '.'
     default_values = '123456789'
     all_values = []
@@ -71,9 +68,18 @@ def grid_values(grid):
     assert len(grid) == 81
     return dict(zip(boxes, all_values))
 
-# print (grid_values(grid1))
 
 def eliminate(values):
+    """Eliminate values from peers of each box with a single value.
+
+    Go through all the boxes, and whenever there is a box with a single value,
+    eliminate this value from the set of values of all its peers.
+
+    Args:
+        values: Sudoku in dictionary form.
+    Returns:
+        Resulting Sudoku in dictionary form after eliminating values.
+    """
     sloved_values = [box for box in values.keys() if len(values[box]) == 1]
     for box in sloved_values:
         value = values[box]
@@ -81,8 +87,16 @@ def eliminate(values):
             values[peer] = values[peer].replace(value, '')
     return values
 
+
 def only_choice(values):
-    
+    """Finalize all values that are the only choice for a unit.
+
+    Go through all the units, and whenever there is a unit with a value
+    that only fits in one box, assign the value to this box.
+
+    Input: Sudoku in dictionary form.
+    Output: Resulting Sudoku in dictionary form after filling in only choices.
+    """
     for unit in unit_list:
         for digit in max_values:
             places = [box for box in unit if digit in values[box]]
@@ -90,9 +104,10 @@ def only_choice(values):
                values[places[0]] = digit
     return values
 
+
 def assign_value(values, box, value):
     """
-    Please use this function to update your values dictionary!
+    use this function to update your values dictionary!
     Assigns a value to a given box. If it updates the board record it.
     """
     values[box] = value
@@ -100,7 +115,19 @@ def assign_value(values, box, value):
         assignments.append(values.copy())
     return values
 
+
 def naked_twins(values):
+    """
+    Go through all the units, and whenever there is a twins in a row and column 
+    search for that twins in that row and column and remove those values from 
+    that boxes.
+    whenever there is a unit with a value
+    that only fits in one box, assign the value to this box.
+
+    Input: Sudoku in dictionary form.
+    Output: Resulting Sudoku in dictionary form after removing each twins in each
+    row and column.
+    """
     for unit in column_units+row_units:
         #finding all the possible twins from the grid
         maybe_twins = [values[box] for box in unit if len(values[box]) == 2]
@@ -141,6 +168,7 @@ def reduce_puzzle(values):
             return False
     return values
 
+
 def search(values):
     "Using depth-first search and propagation, try all possible values."
     # First, reduce the puzzle using the previous function
@@ -159,10 +187,7 @@ def search(values):
         if attempt:
             return attempt
         
-    
-# display(only_choice(eliminate(grid_values(grid1))))
-# print ('*****************')
-# display(naked_twins(only_choice(eliminate(grid_values(grid1)))))
+
 
 def solve(grid):
     """
@@ -176,6 +201,7 @@ def solve(grid):
     values = grid_values(grid)
     values = search(values)
     return values
+
     
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
